@@ -13,16 +13,18 @@ class Parcel {
     String status;
     Parcel next;
 
-    Parcel(String parcelId, String sender, String receiver, String status) {
+    Parcel(Scanner sc, String parcelId, String sender, String receiver, String status) {
+        while (!isValidStatus(status)) {
+            System.out.println("Invalid status. Allowed statuses: Pending, In Transit, Delivered.");
+            System.out.print("Enter a valid status: ");
+            status = sc.nextLine();
+        }
+
         this.parcelId = parcelId;
         this.sender = sender;
         this.receiver = receiver;
-        if (isValidStatus(status)) {
-            this.status = status;
-        } else {
-            throw new IllegalArgumentException("Invalid status. Allowed statuses: Pending, In Transit, Delivered.");
-        }
         this.next = null;
+        this.status = status;
     }
 
     boolean isValidStatus(String status) {
@@ -174,48 +176,45 @@ public class CourierManagementSystem {
 
     public static void main(String[] args) {
         ParcelManager parcelManager = new ParcelManager();
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        parcelManager.insert(new Parcel("P001", "Alice", "Bob", "Pending"));
-        parcelManager.insert(new Parcel("P002", "Charlie", "David", "Pending"));
-        parcelManager.insert(new Parcel("P003", "Eve", "Frank", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P001", "Alice", "Bob", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P002", "Charlie", "David", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P003", "Eve", "Frank", "Pending"));
 
         while (true) {
             System.out.println("\nCourier Parcel Management System");
             System.out.println(
                     "1. Add Parcel\n2. Delete Parcel\n3. Update Parcel Status\n4. Search Parcel\n5. Sort Parcels\n6. Pop from Stack\n7. Display Parcels\n8. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
 
             switch (choice) {
                 case 1:
                     System.out.print("Enter Parcel ID: ");
-                    String parcelId = scanner.nextLine();
+                    String parcelId = sc.nextLine();
                     System.out.print("Enter Sender: ");
-                    String sender = scanner.nextLine();
+                    String sender = sc.nextLine();
                     System.out.print("Enter Receiver: ");
-                    String receiver = scanner.nextLine();
-                    parcelManager.insert(new Parcel(parcelId, sender, receiver, "Pending"));
-                    scanner.close();
+                    String receiver = sc.nextLine();
+                    parcelManager.insert(new Parcel(sc, parcelId, sender, receiver, "Pending"));
                     break;
                 case 2:
                     System.out.print("Enter Parcel ID to delete: ");
-                    parcelId = scanner.nextLine();
+                    parcelId = sc.nextLine();
                     parcelManager.delete(parcelId);
-                    scanner.close();
                     break;
                 case 3:
                     System.out.print("Enter Parcel ID to update: ");
-                    parcelId = scanner.nextLine();
+                    parcelId = sc.nextLine();
                     System.out.print("Enter new status: ");
-                    String status = scanner.nextLine();
+                    String status = sc.nextLine();
                     parcelManager.updateStatus(parcelId, status);
-                    scanner.close();
                     break;
                 case 4:
                     System.out.print("Enter Parcel ID to search: ");
-                    parcelId = scanner.nextLine();
+                    parcelId = sc.nextLine();
                     Parcel parcel = parcelManager.search(parcelId);
                     if (parcel != null) {
                         System.out.println("Parcel Found: ID=" + parcel.parcelId + ", Sender=" + parcel.sender
@@ -223,13 +222,11 @@ public class CourierManagementSystem {
                     } else {
                         System.out.println("Parcel not found.");
                     }
-                    scanner.close();
                     break;
                 case 5:
                     System.out.print("Enter sorting criteria (sender, receiver, status): ");
-                    String criteria = scanner.nextLine();
+                    String criteria = sc.nextLine();
                     parcelManager.sortParcelsBy(criteria);
-                    scanner.close();
                     break;
                 case 6:
                     parcelManager.pop();
@@ -239,6 +236,7 @@ public class CourierManagementSystem {
                     break;
                 case 8:
                     System.out.println("Exiting system.");
+                    sc.close();
                     return;
                 default:
                     System.out.println("Invalid option. Try again.");
