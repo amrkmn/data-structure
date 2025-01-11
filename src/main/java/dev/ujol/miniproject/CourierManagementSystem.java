@@ -45,7 +45,7 @@ class ParcelManager {
         if (head == null) {
             head = parcel;
         } else {
-            Parcel current = parcel;
+            Parcel current = head;
             while (current.next != null) {
                 current = current.next;
             }
@@ -114,7 +114,7 @@ class ParcelManager {
             System.out.println("Parcel list is empty.");
             return null;
         }
-        
+
         if (head.next == null) {
             // If there's only one parcel in the list
             Parcel temp = head;
@@ -122,13 +122,13 @@ class ParcelManager {
             System.out.println("Last parcel removed: " + temp.parcelId);
             return temp;
         }
-        
+
         // Traverse the list to find the second-to-last element
         Parcel current = head;
         while (current.next.next != null) {
             current = current.next;
         }
-        
+
         // Remove the last element
         Parcel temp = current.next;
         current.next = null;
@@ -174,12 +174,12 @@ class ParcelManager {
     }
 
     void displayAll() {
-        if (head == null) {
+        Parcel current = head;
+        if (current == null) {
             System.out.println("Parcel list is empty.");
             return;
         }
 
-        Parcel current = head;
         while (current != null) {
             System.out.println("Parcel ID: " + current.parcelId + ", Sender: " + current.sender + ", Receiver: "
                     + current.receiver + ", Status: " + current.status);
@@ -196,8 +196,8 @@ public class CourierManagementSystem {
         Scanner sc = new Scanner(System.in);
 
         parcelManager.insert(new Parcel(sc, "P001", "Alice", "Bob", "Pending"));
-        parcelManager.insert(new Parcel(sc, "P002", "Charlie", "David", "Pending"));
-        parcelManager.insert(new Parcel(sc, "P003", "Eve", "Frank", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P002", "Amir", "David", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P003", "Ali", "Frank", "Pending"));
 
         while (true) {
             System.out.println("\nCourier Parcel Management System");
