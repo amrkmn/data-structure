@@ -17,8 +17,16 @@ class Parcel {
         this.parcelId = parcelId;
         this.sender = sender;
         this.receiver = receiver;
-        this.status = status;
+        if (isValidStatus(status)) {
+            this.status = status;
+        } else {
+            throw new IllegalArgumentException("Invalid status. Allowed statuses: Pending, In Transit, Delivered.");
+        }
         this.next = null;
+    }
+
+    boolean isValidStatus(String status) {
+        return status.equals("Pending") || status.equals("In Transit") || status.equals("Delivered");
     }
 }
 
@@ -72,6 +80,10 @@ class ParcelManager {
 
     void updateStatus(String parcelId, String newStatus) {
         Parcel current = head;
+        if (!current.isValidStatus(newStatus)) {
+            System.out.println("Invalid status. Allowed statuses: Pending, In Transit, Delivered.");
+            return;
+        }
         while (current != null) {
             if (current.parcelId.equals(parcelId)) {
                 current.status = newStatus;
@@ -136,8 +148,9 @@ class ParcelManager {
 
         System.out.println("Parcels sorted by " + criteria + ":");
         for (Parcel parcel : parcelArray) {
-            System.out.println("ID=" + parcel.parcelId + ", Sender=" + parcel.sender + ", Receiver=" + parcel.receiver
-                    + ", Status=" + parcel.status);
+            System.out
+                    .println("ID=" + parcel.parcelId + ", Sender=" + parcel.sender + ", Receiver=" + parcel.receiver
+                            + ", Status=" + parcel.status);
         }
     }
 
@@ -163,6 +176,10 @@ public class CourierManagementSystem {
         ParcelManager parcelManager = new ParcelManager();
         Scanner scanner = new Scanner(System.in);
 
+        parcelManager.insert(new Parcel("P001", "Alice", "Bob", "Pending"));
+        parcelManager.insert(new Parcel("P002", "Charlie", "David", "Pending"));
+        parcelManager.insert(new Parcel("P003", "Eve", "Frank", "Pending"));
+
         while (true) {
             System.out.println("\nCourier Parcel Management System");
             System.out.println(
@@ -179,9 +196,7 @@ public class CourierManagementSystem {
                     String sender = scanner.nextLine();
                     System.out.print("Enter Receiver: ");
                     String receiver = scanner.nextLine();
-                    System.out.print("Enter Status: ");
-                    String status = scanner.nextLine();
-                    parcelManager.insert(new Parcel(parcelId, sender, receiver, status));
+                    parcelManager.insert(new Parcel(parcelId, sender, receiver, "Pending"));
                     scanner.close();
                     break;
                 case 2:
@@ -194,7 +209,7 @@ public class CourierManagementSystem {
                     System.out.print("Enter Parcel ID to update: ");
                     parcelId = scanner.nextLine();
                     System.out.print("Enter new status: ");
-                    status = scanner.nextLine();
+                    String status = scanner.nextLine();
                     parcelManager.updateStatus(parcelId, status);
                     scanner.close();
                     break;
