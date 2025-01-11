@@ -188,7 +188,7 @@ public class CourierManagementSystem {
                     "1. Add Parcel\n2. Delete Parcel\n3. Update Parcel Status\n4. Search Parcel\n5. Sort Parcels\n6. Pop from Stack\n7. Display Parcels\n8. Exit");
             System.out.print("Choose an option: ");
             int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
