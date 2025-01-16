@@ -195,9 +195,9 @@ public class CourierManagementSystem {
         ParcelManager parcelManager = new ParcelManager();
         Scanner sc = new Scanner(System.in);
 
-        parcelManager.insert(new Parcel(sc, "P001", "Alice", "Bob", "Pending"));
-        parcelManager.insert(new Parcel(sc, "P002", "Amir", "David", "Pending"));
-        parcelManager.insert(new Parcel(sc, "P003", "Ali", "Frank", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P001", "Alice", "Zul", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P002", "Amir", "Frank", "Pending"));
+        parcelManager.insert(new Parcel(sc, "P003", "Ali", "David", "Pending"));
 
         while (true) {
             System.out.println("\nCourier Parcel Management System");
